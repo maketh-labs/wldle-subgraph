@@ -43,4 +43,6 @@ type Game @entity {
     winner: String!
     # cancelled
     cancelled: Boolean!
+    # creation timestamp
+    createdAt: BigInt!
 }

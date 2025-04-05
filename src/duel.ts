@@ -2,88 +2,56 @@ import {
   Cancelled as CancelledEvent,
   Created as CreatedEvent,
   Joined as JoinedEvent,
-  OwnershipTransferred as OwnershipTransferredEvent,
-  Resolved as ResolvedEvent
-} from "../generated/Duel/Duel"
-import {
-  Cancelled,
-  Created,
-  Joined,
-  OwnershipTransferred,
-  Resolved
-} from "../generated/schema"
-
-export function handleCancelled(event: CancelledEvent): void {
-  let entity = new Cancelled(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.gameId = event.params.gameId
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
+  Resolved as ResolvedEvent,
+} from '../generated/Duel/Duel'
+import { Game } from '../generated/schema'
 
 export function handleCreated(event: CreatedEvent): void {
-  let entity = new Created(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.gameId = event.params.gameId
-  entity.player1 = event.params.player1
-  entity.resolver = event.params.resolver
-  entity.token = event.params.token
-  entity.amount = event.params.amount
-  entity.fee = event.params.fee
+  const gameId = event.params.gameId.toHexString()
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  const game = new Game(gameId)
+  game.player1 = event.params.player1.toHexString()
+  game.player2 = ''
+  game.resolver = event.params.resolver.toHexString()
+  game.token = event.params.token.toHexString()
+  game.amount = event.params.amount
+  game.fee = event.params.fee
+  game.settled = false
+  game.winner = ''
+  game.cancelled = false
+  game.createdAt = event.block.timestamp
 
-  entity.save()
+  game.save()
 }
 
 export function handleJoined(event: JoinedEvent): void {
-  let entity = new Joined(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.gameId = event.params.gameId
-  entity.player2 = event.params.player2
+  const gameId = event.params.gameId.toHexString()
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
-
-export function handleOwnershipTransferred(
-  event: OwnershipTransferredEvent
-): void {
-  let entity = new OwnershipTransferred(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.previousOwner = event.params.previousOwner
-  entity.newOwner = event.params.newOwner
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  const game = Game.load(gameId)
+  if (game) {
+    game.player2 = event.params.player2.toHexString()
+    game.save()
+  }
 }
 
 export function handleResolved(event: ResolvedEvent): void {
-  let entity = new Resolved(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.gameId = event.params.gameId
-  entity.winner = event.params.winner
+  const gameId = event.params.gameId.toHexString()
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  const game = Game.load(gameId)
+  if (game) {
+    game.settled = true
+    game.winner = event.params.winner.toHexString()
+    game.save()
+  }
+}
 
-  entity.save()
+export function handleCancelled(event: CancelledEvent): void {
+  const gameId = event.params.gameId.toHexString()
+
+  const game = Game.load(gameId)
+  if (game) {
+    game.settled = true
+    game.cancelled = true
+    game.save()
+  }
 }
