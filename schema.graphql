@@ -1,0 +1,47 @@
+type Cancelled @entity(immutable: true) {
+  id: Bytes!
+  gameId: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Created @entity(immutable: true) {
+  id: Bytes!
+  gameId: Bytes! # bytes32
+  player1: Bytes! # address
+  resolver: Bytes! # address
+  token: Bytes! # address
+  amount: BigInt! # uint256
+  fee: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Joined @entity(immutable: true) {
+  id: Bytes!
+  gameId: Bytes! # bytes32
+  player2: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Resolved @entity(immutable: true) {
+  id: Bytes!
+  gameId: Bytes! # bytes32
+  winner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

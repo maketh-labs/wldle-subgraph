@@ -1,0 +1,8 @@
+{
+  "mainnet": {
+    "Duel": {
+      "address": "0x1ecd082D917b638fB87a9C79CB04830e5651c9b6",
+      "startBlock": 0
+    }
+  }
+}
