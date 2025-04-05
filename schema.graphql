@@ -1,47 +1,46 @@
-type Cancelled @entity(immutable: true) {
-  id: Bytes!
-  gameId: Bytes! # bytes32
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+# entities for daily contract
+type DailyClaimedHistory @entity {
+    # {user address}
+    id: ID!
+    # day
+    day: BigInt!
+    # amount in wei
+    amount: BigInt!
+    # ranking
+    ranking: BigInt!
 }
 
-type Created @entity(immutable: true) {
-  id: Bytes!
-  gameId: Bytes! # bytes32
-  player1: Bytes! # address
-  resolver: Bytes! # address
-  token: Bytes! # address
-  amount: BigInt! # uint256
-  fee: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type DailyClaimedStat @entity {
+    # 'today'
+    id: ID!
+    # day
+    day: BigInt!
+    # total amount in wei
+    amount: BigInt!
+    # count
+    count: BigInt!
 }
 
-type Joined @entity(immutable: true) {
-  id: Bytes!
-  gameId: Bytes! # bytes32
-  player2: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type OwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type Resolved @entity(immutable: true) {
-  id: Bytes!
-  gameId: Bytes! # bytes32
-  winner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+# entities for duel contract
+type Game @entity {
+    # {gameId}
+    id: ID!
+    # player1 address
+    player1: String!
+    # player2 address
+    player2: String!
+    # resolver address
+    resolver: String!
+    # amount
+    amount: BigInt!
+    # fee
+    fee: BigInt!
+    # token address
+    token: String!
+    # settled
+    settled: Boolean!
+    # winner address
+    winner: String!
+    # cancelled
+    cancelled: Boolean!
 }

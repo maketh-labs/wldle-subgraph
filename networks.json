@@ -1,8 +1,22 @@
 {
-  "mainnet": {
+  "localhost": {
+    "Daily": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 11644060
+    },
     "Duel": {
       "address": "0x1ecd082D917b638fB87a9C79CB04830e5651c9b6",
-      "startBlock": 0
+      "startBlock": 11644060
+    }
+  },
+  "worldchain-sepolia": {
+    "Daily": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 11644060
+    },
+    "Duel": {
+      "address": "0x1ecd082D917b638fB87a9C79CB04830e5651c9b6",
+      "startBlock": 11644060
     }
   }
 }
